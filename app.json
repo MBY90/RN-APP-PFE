@@ -1,0 +1,12 @@
+{
+  "name": "MobileAppTopTech3",
+  "displayName": "MobileAppTopTech3",
+  "expo": {
+    "name": "MobileAppTopTech3",
+    "slug": "MobileAppTopTech3",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
