@@ -1,21 +1,100 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import  React, {useEffect}from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import About from './screens/About';
+import {Provider} from 'react-redux';
+import store from './store';
+import ViewScreen from './screens/ViewScreen';
+import {createStackNavigator} from '@react-navigation/stack';
+import CustomDrawer from './screens/CustomDrawer';
+import RootStackScreen from './screens/RootStackScreen';
+import Icon from '@expo/vector-icons/Ionicons';
+import {loadUser} from './redux/actions/authaction';
+import { useEffect } from 'react';
+
+const ViewStack =createStackNavigator();
+const AboutStack= createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+
+const ViewStackScreen=({navigation})=>(
+  <ViewStack.Navigator screenOptions={{
+    headerStyle:{
+     backgroundColor:'#009387'
+    },
+    headerTintColor:'#fff',
+    headerTitleStyle:{
+      fontWeight:'bold',
+    
+    }
+  }}>
+    <ViewStack.Screen name='View' component={ViewScreen} options={{
+      title:'View',
+      
+      headerLeft:()=>(
+        <Icon.Button name="menu" size ={25} backgroundColor='#009387'
+        onPress={()=>navigation.openDrawer()}> </Icon.Button>
+      )
+    }}/>
+  
+  
+  </ViewStack.Navigator>
+  
+
+);
+const AboutStackScreen=({navigation})=>(
+  <AboutStack.Navigator screenOptions={{
+    headerStyle:{
+     backgroundColor:'#009387'
+    },
+    headerTintColor:'#fff',
+    headerTitleStyle:{
+      fontWeight:'bold'
+    }
+  }}>
+    <AboutStack.Screen name='About' component={About} options={{
+      headerLeft:()=>(
+        <Icon.Button name="menu" size ={25} backgroundColor='#009387'
+        onPress={()=>navigation.openDrawer()}> </Icon.Button>
+      )
+    
+    }}/>
+  
+  
+  </AboutStack.Navigator>
+  
+);
+
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  useEffect(() => {
+  store.dispatch(loadUser());
+  }, []);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+  return (
+    <Provider store={store}>
+    <NavigationContainer>
+    {isAuthenticated===true ?  (
+    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props } />}>
+    <Drawer.Screen 
+    name="View" 
+    component={ViewStackScreen}
+    options={{}}
+    />
+    <Drawer.Screen 
+     name="About"
+     component={AboutStackScreen}
+     options={{}} 
+   />
+  </Drawer.Navigator>)
+
+      : <RootStackScreen/>}
+     
+
+    </NavigationContainer>
+    </Provider>
+  );
+  
+}
