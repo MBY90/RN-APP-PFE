@@ -1,7 +1,7 @@
 import React from 'react'
 import{View,StyleSheet,Text,Button} from 'react-native';
 
-import { DrawerActions } from '@react-navigation/native';
+
      
 export default function About({navigation}) {
     return (

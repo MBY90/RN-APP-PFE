@@ -1,17 +1,17 @@
-import  React, {useEffect}from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import  React,{useEffect} from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import About from './screens/About';
-import {Provider} from 'react-redux';
+import {useDispatch,useSelector,Provider} from 'react-redux';
 import store from './store';
 import ViewScreen from './screens/ViewScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import CustomDrawer from './screens/CustomDrawer';
 import RootStackScreen from './screens/RootStackScreen';
-import Icon from '@expo/vector-icons/Ionicons';
 import {loadUser} from './redux/actions/authaction';
-import { useEffect } from 'react';
+import Icon from '@expo/vector-icons/Ionicons';
+import { clearErrors } from './redux/actions/erroraction';
+
 
 const ViewStack =createStackNavigator();
 const AboutStack= createStackNavigator();
@@ -19,6 +19,7 @@ const Drawer = createDrawerNavigator();
 
 
 const ViewStackScreen=({navigation})=>(
+
   <ViewStack.Navigator screenOptions={{
     headerStyle:{
      backgroundColor:'#009387'
@@ -68,15 +69,21 @@ const AboutStackScreen=({navigation})=>(
 
 
 export default function App() {
-  useEffect(() => {
-  store.dispatch(loadUser());
-  }, []);
 
+const disptach= useDispatch();
+
+useEffect(() => {
+
+  disptach(loadUser());
+}, []);
+
+
+const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
   return (
     <Provider store={store}>
     <NavigationContainer>
-    {isAuthenticated===true ?  (
+    {isAuthenticated ?  (
     <Drawer.Navigator drawerContent={props => <CustomDrawer {...props } />}>
     <Drawer.Screen 
     name="View" 

@@ -4,6 +4,9 @@ import { View,StyleSheet, } from 'react-native';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
+
+
 import {
     Avatar,
     Title,
@@ -13,11 +16,18 @@ import {
     TouchableRipple,
     Switch
 } from 'react-native-paper';
-import {AuthContext} from '../context/Context';
+import { SignOut } from '../redux/actions/authaction';
 
 
 export default function CustomDrawer({...props }) {
-   const { SignOut }= React.useContext(AuthContext);
+  const dispatch = useDispatch();
+  const email=useSelector(state=>state.auth.user.email);
+
+const logout=()=>{
+  dispatch(SignOut());
+};
+
+ 
     return (
       <View style={{flex:1}} >
     <DrawerContentScrollView { ...props}>
@@ -27,8 +37,8 @@ export default function CustomDrawer({...props }) {
     <Icon.Button name="menu" size ={25} color='black' backgroundColor='white'
     onPress={()=>props.navigation.closeDrawer()}> </Icon.Button> 
     <View>
-    <Title style={styles.title}> Med BEN YOUSSEF </Title>
-    <Caption style={styles.caption}> @MBY </Caption>
+    <Title style={styles.title}> {email} </Title>
+    <Caption style={styles.caption}> @{email} </Caption>
     </View>
     
     </View>
@@ -36,7 +46,7 @@ export default function CustomDrawer({...props }) {
     <DrawerItem 
     icon={(color,size)=>
         <Icon name="home-outline"
-        color={color}
+        color='black'
         size={20}
         />
     }
@@ -46,7 +56,7 @@ export default function CustomDrawer({...props }) {
     <DrawerItem 
     icon={(color,size)=>
         <Icon name="account-outline"
-        color={color}
+        color='black'
         size={20}
         />
     }
@@ -61,12 +71,12 @@ export default function CustomDrawer({...props }) {
     <DrawerItem 
     icon={(color,size)=>
         <Icon name="exit-to-app"
-        color={color}
+        color='black'
         size={20}
         />
     }
     label="Sign Out"
-    onPress={()=>{SignOut()}}
+    onPress={() => {logout()}}
     />
     
     </Drawer.Section>

@@ -1,10 +1,18 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Text, View,StyleSheet,Dimensions,Image,TouchableOpacity, Alert} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
+import {clearErrors} from '../redux/actions/erroraction';
+import {useDispatch} from 'react-redux';
+
 
 export default function SplashScreen({navigation}) {
+   const  dispatch=useDispatch();
+useEffect(() => {
+ dispatch(clearErrors());
+}, []);
+
     return (
         <View style={styles.container}>
         <View style={styles.header}>
@@ -20,7 +28,7 @@ export default function SplashScreen({navigation}) {
         <Text style ={styles.title}>Check your Device Health </Text>
         <Text style = {styles.text}>Sign in with account</Text>
         <View style={styles.button}>
-        <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}>
+        <TouchableOpacity onPress={()=>navigation.navigate('SignIn')} >
         <LinearGradient
         colors={['#08d4c4','#01ab9d']} 
         style={styles.signIn}>

@@ -1,67 +1,81 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Text, View,StyleSheet,Dimensions,Platform,Image,TextInput,TouchableOpacity, Alert, StatusBar} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import * as Animatable from 'react-native-animatable';
+import {SignUp} from '../redux/actions/authaction';
+import {clearErrors} from '../redux/actions/erroraction';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function SignIn({navigation}) {
-    const [data,setData]=useState({
-      email:'',
-      password:'',
-      confirm_Password:'',
-      check_textInputChange:false,
-      secureTextEntry:true,
-      Confirm_secureTextEntry:true
-    });
+    const dispatch = useDispatch();
+  const error = useSelector(state => state.error);
+  const isAuthenticated=useSelector(state=>state.auth.isAuthenticated);
+  const [msg, setMsg] = useState(null);
+
+
+    
+  
+
+    const [email,setEmail]=useState('');
+    const [password,setPassword]=useState('');
+    const [check_textInputChange,setCheck_textInputChange]=useState(false);
+    const [secureTextEntry,setSecureTextEntry]=useState(true);
+    const [confirm_secureTextEntry,setConfirm_secureTextEntry]=useState(true);
+
     const textInputChange=(val)=>{
         if(val.length!==0){
-           setData({
-               ...data,
-               email:val,
-               check_textInputChange:true
-
-           }) ;
+            setEmail(val);
+            setCheck_textInputChange(true);
+         
         }else{
-            setData({
-                ...data,
-                email:val,
-                check_textInputChange:false
-        })
+            setEmail(val);
+            setCheck_textInputChange(false);
 
     }}
     const handelPasswordChange=(val)=>{
-        setData({
-            ...data,
-            password:val
-
-        });
+        setPassword(val);
+      
     }
     const handelConfirmPasswordChange=(val)=>{
-        setData({
-            ...data,
-            confirm_Password:val
-
-        });
+        setConfirm_secureTextEntry(val);
+       
     }
  
     const updateSecureTextEntry=()=>{
-        setData({
-          ...data,
-          secureTextEntry:!data.secureTextEntry
-
-        });
+        setSecureTextEntry(!secureTextEntry);
+       
     }
     const updateConfirmSecureTextEntry=()=>{
-        setData({
-          ...data,
-         confirm_secureTextEntry:!data. confirm_secureTextEntry
+        setConfirm_secureTextEntry(!confirm_secureTextEntry);
+    }
+      
+    useEffect(() => {
+        dispatch(clearErrors());
+       }, []);
+      useEffect(() => {
 
-        });
+        // Check for register error
+        if (error.id === 'LOGIN_FAIL') {
+          setMsg(error.msg.msg);
+        } else {
+          setMsg(null);
+     
+        }
+    
+      }, [error,isAuthenticated]);
+      const logupHandler=()=>{
+        if(msg){
+            console.log({msg})
+        }
+        else {dispatch(SignUp({email,password}));}
+        
     }
 
     return (
         <View style={styles.container}>
+    
         <StatusBar backgroundColor='#009387'barStyle="light-content"/>
         <View style={styles.header}>
         <Text style={styles.text_header}> Register Now! </Text>
@@ -69,6 +83,7 @@ export default function SignIn({navigation}) {
         <Animatable.View style={styles.footer}
         animation='fadeInUpBig'
         >
+       
         <Text style={styles.text_footer}> Email </Text>
         <View style={styles.action}>
         <FontAwesome
@@ -80,9 +95,10 @@ export default function SignIn({navigation}) {
         placeholder="Your Email"
         style={styles.textInput}
         autoCapitalize='none'
-        onChangeText={(val)=>textInputChange(val)}
+        value={email}
+        onChangeText={setEmail}
         />
-        {data.check_textInputChange? 
+        {check_textInputChange? 
             <Animatable.View 
              animation="bounceIn" 
              >
@@ -103,13 +119,14 @@ export default function SignIn({navigation}) {
             />
             <TextInput
             placeholder="Your Password"
-            secureTextEntry={data.secureTextEntry? true:false}
+            secureTextEntry={secureTextEntry? true:false}
             style={styles.textInput}
             autoCapitalize='none'
-            onChangeText={(val)=>handelPasswordChange(val)}
+            value={password}
+            onChangeText={setPassword}
             />
             <TouchableOpacity onPress={updateSecureTextEntry}>
-           {data.secureTextEntry?  <Feather
+           {secureTextEntry?  <Feather
             name="eye-off"
             color="gray"
             size={20}
@@ -131,13 +148,14 @@ export default function SignIn({navigation}) {
                 />
                 <TextInput
                 placeholder="Your Password"
-                secureTextEntry={data.secureTextEntry? true:false}
+                secureTextEntry={secureTextEntry? true:false}
                 style={styles.textInput}
                 autoCapitalize='none'
-                onChangeText={(val)=>handelConfirmPasswordChange(val)}
+                value={password}
+                onChangeText={setPassword}
                 />
                 <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
-               {data.secureTextEntry?  <Feather
+               {secureTextEntry?  <Feather
                 name="eye-off"
                 color="gray"
                 size={20}
@@ -148,17 +166,27 @@ export default function SignIn({navigation}) {
                 />}
                
                 </TouchableOpacity>
-            
+        
                     </View>
+                    <Text style={{color:'red',marginTop:20}}>{msg}</Text>
             <View style={styles.button}>
+
+            <TouchableOpacity onPress={()=>{logupHandler()}}  style={[styles.signIn,
+                { 
+                borderBottomColor:'#009387',
+                 borderWidth:1,
+                 marginTop:15
+            }]}
+            >
             <LinearGradient
             colors={['#08d4c4','#01ab9d']}
-            style={styles.signIn}
+            style={styles.signIn} 
             >
             <Text style={[styles.textSign,{
                 color:'#fff'
             }] }> Sign Up </Text>
             </LinearGradient>
+            </TouchableOpacity>
             <TouchableOpacity onPress={()=>navigation.navigate('SignIn')}
             style={[styles.signIn,
                 { 
@@ -167,6 +195,7 @@ export default function SignIn({navigation}) {
                  marginTop:15
             }]}
             >
+
             <Text style={[styles.textSign,{
                 color:'#009387'
             }]} > Sign In </Text>

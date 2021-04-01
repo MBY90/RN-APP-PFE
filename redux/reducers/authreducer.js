@@ -1,51 +1,61 @@
-import {LOGOUT,REGESTER,LOGIN,USER_LOADING} from '../actions/types';
+import {
+  USER_LOADED,
+  USER_LOADING,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT_SUCCESS,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL
+} from '../actions/types';
+
 import getToken from '../ManageToken/getToken';
 import setToken from '../ManageToken/setToken';
 import removeToken from '../ManageToken/removeToken';
 
-const  initialLoginState= {
-    isLoading :false,
-    userName:null,
-    userToken:getToken(),
-    isAuthenticated: null,
-   
-   };
- 
- const authReducer=(prevState,action)=>{
- 
-   switch(action.type){
+const initialState = {
+  token: getToken(),
+  isAuthenticated: null,
+  isLoading: false,
+  user: null
+};
+
+export default function(state = initialState, action) {
+  switch (action.type) {
     case USER_LOADING:
       return {
-        ...prevState,
+        ...state,
         isLoading: true
       };
-      case LOGOUT:
-          removeToken();
-       return {
-         ...prevState,
-         isAuthenticated: false,
-         isLoading: false,
-         userToken:null,
-         userName:null
-       };
-       case REGESTER:
-        setToken('token',action.payload.token);
-         return {
-           ...prevState,
-           ...action.payload,
-           isLoading: false,
-           isAuthenticated: true,
-         }
-         case LOGIN :
-            setToken('token',action.payload.token);
-           return { 
-               ...prevState,
-             ...action.payload,
-             isLoading: false,
-             isAuthenticated: true,
-           };
-           default:
-               prevState;
-   }
- }
-export default authReducer;
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        isLoading: false,
+        user: action.payload
+      };
+    case LOGIN_SUCCESS:
+    case REGISTER_SUCCESS:
+     setToken('token', action.payload.token);
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+        isLoading: false
+      };
+    case AUTH_ERROR:
+    case LOGIN_FAIL:
+    case LOGOUT_SUCCESS:
+    case REGISTER_FAIL:
+     removeToken('token');
+      return {
+        ...state,
+        token: null,
+        user: null,
+        isAuthenticated: false,
+        isLoading: false
+      };
+    default:
+      return state;
+  }
+}
