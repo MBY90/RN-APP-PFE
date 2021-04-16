@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { Text, View,StyleSheet,Dimensions,Platform,Image,TextInput,TouchableOpacity, Alert, StatusBar} from 'react-native';
+import { Text, View,StyleSheet,Dimensions,Platform,Image,TextInput,TouchableOpacity, Alert, StatusBar,ScrollView} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -67,6 +67,7 @@ export default function login({navigation}) {
     
  
     return (
+        <ScrollView>
         <View style={styles.container}>
  
         <StatusBar backgroundColor='#009387'barStyle="light-content"/>
@@ -165,6 +166,7 @@ export default function login({navigation}) {
             </View>
         </Animatable.View>
         </View>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({

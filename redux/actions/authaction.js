@@ -17,7 +17,7 @@ export const loadUser = () => (dispatch, getState) => {
   dispatch({ type: USER_LOADING });
 
   axios
-    .get('http://192.168.1.105:5000/api/auth/user', tokenConfig(getState))
+    .get('https://backend-pfe-mby.herokuapp.com/api/auth/user', tokenConfig(getState))
     .then(res =>
       dispatch({
         type: USER_LOADED,
@@ -45,7 +45,7 @@ export const SignUp = ({email, password }) => (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   axios
-    .post('http://192.168.1.105:5000/api/users', body, config)
+    .post('https://backend-pfe-mby.herokuapp.com/api/users', body, config)
     .then(res =>
       dispatch({
         type: REGISTER_SUCCESS,
@@ -75,7 +75,7 @@ export const SignIn = ({ email, password }) => (dispatch) => {
   const body = JSON.stringify({ email, password });
 
   axios
-    .post('http://192.168.1.105:5000/api/auth', body, config)
+    .post('https://backend-pfe-mby.herokuapp.com/api/auth', body, config)
     .then(res =>
       dispatch({
         type: LOGIN_SUCCESS,

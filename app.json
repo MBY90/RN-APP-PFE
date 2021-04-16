@@ -4,6 +4,10 @@
   "expo": {
     "name": "MobileAppTopTech3",
     "slug": "MobileAppTopTech3",
+    "android": {
+      "package": "com.yourcompany.yourappname",
+      "versionCode": 2
+    },
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
