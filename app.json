@@ -6,7 +6,7 @@
     "slug": "MobileAppTopTech3",
     "android": {
       "package": "com.yourcompany.yourappname",
-      "versionCode": 2
+      "versionCode": 3
     },
     "version": "1.0.0",
     "assetBundlePatterns": [

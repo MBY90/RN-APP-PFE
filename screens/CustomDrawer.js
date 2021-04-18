@@ -5,7 +5,7 @@ import React from 'react';
 import Animated from 'react-native-reanimated';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
     Avatar,
@@ -25,6 +25,7 @@ export default function CustomDrawer({...props }) {
 
 const logout=()=>{
   dispatch(SignOut());
+  AsyncStorage.clear();
 };
 
  

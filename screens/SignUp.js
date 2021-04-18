@@ -51,13 +51,16 @@ export default function SignIn({navigation}) {
         setConfirm_secureTextEntry(!confirm_secureTextEntry);
     }
       
-    useEffect(() => {
-        dispatch(clearErrors());
+
+        useEffect(() => {
+        dispatch(clearErrors()); 
        }, []);
+
+
       useEffect(() => {
 
         // Check for register error
-        if (error.id === 'LOGIN_FAIL') {
+        if (error.id === 'REGISTER_FAIL') {
           setMsg(error.msg.msg);
         } else {
           setMsg(null);
@@ -65,11 +68,10 @@ export default function SignIn({navigation}) {
         }
     
       }, [error,isAuthenticated]);
+      
       const logupHandler=()=>{
-        if(msg){
-            console.log({msg})
-        }
-        else {dispatch(SignUp({email,password}));}
+       
+                dispatch(SignUp({email,password}))
         
     }
 

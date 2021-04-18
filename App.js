@@ -3,7 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import About from './screens/About';
 import {useDispatch,useSelector,Provider} from 'react-redux';
-import store from './store';
+
 import ViewScreen from './screens/ViewScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import CustomDrawer from './screens/CustomDrawer';
@@ -11,6 +11,8 @@ import RootStackScreen from './screens/RootStackScreen';
 import {loadUser} from './redux/actions/authaction';
 import Icon from '@expo/vector-icons/Ionicons';
 import { clearErrors } from './redux/actions/erroraction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const ViewStack =createStackNavigator();
@@ -68,22 +70,28 @@ const AboutStackScreen=({navigation})=>(
 );
 
 
-export default function App() {
+export default function App({navigation}) {
 
 const disptach= useDispatch();
+const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+
+
+
 
 useEffect(() => {
 
-  disptach(loadUser());
+  disptach(loadUser()); 
+
+  
 }, []);
 
-
-const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
+ 
   return (
-    <Provider store={store}>
+
+    
     <NavigationContainer>
-    {isAuthenticated ?  (
+    {isAuthenticated  ?  (
     <Drawer.Navigator drawerContent={props => <CustomDrawer {...props } />}>
     <Drawer.Screen 
     name="View" 
@@ -101,7 +109,7 @@ const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
      
 
     </NavigationContainer>
-    </Provider>
+   
   );
   
 }

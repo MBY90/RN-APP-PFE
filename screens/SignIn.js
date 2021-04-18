@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import {useDispatch,useSelector} from 'react-redux';
 import {SignIn}  from '../redux/actions/authaction';
 import {clearErrors} from '../redux/actions/erroraction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function login({navigation}) {
@@ -37,15 +38,15 @@ export default function login({navigation}) {
         setSecureTextEntry(!secureTextEntry);
      
     }
+   
+   
 
     useEffect(() => {
         dispatch(clearErrors());
+        
        }, []);
 
       useEffect(() => {
-       
-    
-       
         // Check for register error
         if (error.id === 'LOGIN_FAIL') {
           setMsg(error.msg.msg);
@@ -54,16 +55,17 @@ export default function login({navigation}) {
           setMsg(null);
         
         }
-       
+      }, [error,isAuthenticated]);
     
-      }, [error,isAuthenticated,  ]);
-   
       const loginHandler=()=>{
+            
+            dispatch(SignIn({email,password}));
+            
+           }
+
        
-           
-         dispatch(SignIn({email,password}));
        
-        }   
+         
     
  
     return (
