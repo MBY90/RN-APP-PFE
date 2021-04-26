@@ -6,7 +6,10 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  DELACCOUNT_FAIL,
+  DELACCOUNT_SECCESS
+
 } from '../actions/types';
 
 import getToken from '../ManageToken/getToken';
@@ -36,6 +39,8 @@ export default function(state = initialState, action) {
       };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+ 
+   
      setToken('token', action.payload.token);
       return {
         ...state,
@@ -47,6 +52,8 @@ export default function(state = initialState, action) {
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
+    case DELACCOUNT_SECCESS:
+  
      removeToken('token');
       return {
         ...state,
@@ -55,6 +62,9 @@ export default function(state = initialState, action) {
         isAuthenticated: false,
         isLoading: false
       };
+     
+       
+    case  DELACCOUNT_FAIL:
     default:
       return state;
   }

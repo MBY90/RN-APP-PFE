@@ -8,7 +8,9 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAIL,
+  DELACCOUNT_SECCESS,
+  DELACCOUNT_FAIL
 } from './types';
 
 // Check token & load user
@@ -92,6 +94,27 @@ export const SignIn = ({ email, password }) => (dispatch) => {
     });
 };
 
+//Delete Acount
+export const deleteAccount=({email})=>dispatch=>{
+
+  axios.delete(`https://backend-pfe-mby.herokuapp.com/api/users/delete/${email}`)
+  .then(res=>{
+    dispatch({
+      type:DELACCOUNT_SECCESS,
+      payload:res.data})
+  
+  console.log('delete seccuss');  })
+  .catch(err=>{
+    console.log(err.response.data,err.response.status);
+    dispatch(
+      returnErrors(err.response.data,err.response.status,'DELACCOUNT_FAIL')
+    
+    );
+    dispatch({
+      type:DELACCOUNT_FAIL
+    })
+  })
+}
 // Logout User
 export const SignOut = () => {
   return {

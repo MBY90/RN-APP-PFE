@@ -12,11 +12,13 @@ import {loadUser} from './redux/actions/authaction';
 import Icon from '@expo/vector-icons/Ionicons';
 import { clearErrors } from './redux/actions/erroraction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Setting from './screens/Setting';
 
 
 
 const ViewStack =createStackNavigator();
 const AboutStack= createStackNavigator();
+const SettingStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 
@@ -46,6 +48,34 @@ const ViewStackScreen=({navigation})=>(
   
 
 );
+
+const SettingStackScreen=({navigation})=>(
+
+  <SettingStack.Navigator screenOptions={{
+    headerStyle:{
+     backgroundColor:'#009387'
+    },
+    headerTintColor:'#fff',
+    headerTitleStyle:{
+      fontWeight:'bold',
+    
+    }
+  }}>
+    <SettingStack.Screen name='Setting' component={Setting} options={{
+      title:'Setting',
+      
+      headerLeft:()=>(
+        <Icon.Button name="menu" size ={25} backgroundColor='#009387'
+        onPress={()=>navigation.openDrawer()}> </Icon.Button>
+      )
+    }}/>
+  
+  
+  </SettingStack.Navigator>
+  
+
+);
+
 const AboutStackScreen=({navigation})=>(
   <AboutStack.Navigator screenOptions={{
     headerStyle:{
@@ -103,6 +133,11 @@ useEffect(() => {
      component={AboutStackScreen}
      options={{}} 
    />
+   <Drawer.Screen
+   name="Setting"
+   component={SettingStackScreen}
+   options={{}}/>
+
   </Drawer.Navigator>)
 
       : <RootStackScreen/>}

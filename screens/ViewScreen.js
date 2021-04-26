@@ -17,10 +17,9 @@ Notifications.setNotificationHandler({
 export default function ViewScreen({navigation}) {
 
   useEffect(() => {
-  if(isAuthenticated===true)
-  {
+
   schedulePushNotification({email});
-  }
+  
  
   
     

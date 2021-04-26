@@ -4,6 +4,7 @@ import { View,StyleSheet, } from 'react-native';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -56,7 +57,17 @@ const logout=()=>{
     />
     <DrawerItem 
     icon={(color,size)=>
-        <Icon name="account-outline"
+        <Icon name="account-cog-outline"
+        color='black'
+        size={20}
+        />
+    }
+    label="Setting"
+    onPress={()=>{props.navigation.navigate('Setting')}}
+    />
+    <DrawerItem 
+    icon={(color,size)=>
+        <Icon name="file-alert-outline"
         color='black'
         size={20}
         />
@@ -64,6 +75,8 @@ const logout=()=>{
     label="About"
     onPress={()=>{props.navigation.navigate('About')}}
     />
+
+  
     </Drawer.Section>
     </View>
     </DrawerContentScrollView>
