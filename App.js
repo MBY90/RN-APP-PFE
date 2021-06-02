@@ -3,7 +3,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import About from './screens/About';
 import {useDispatch,useSelector,Provider} from 'react-redux';
-
 import ViewScreen from './screens/ViewScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import CustomDrawer from './screens/CustomDrawer';
@@ -13,13 +12,18 @@ import Icon from '@expo/vector-icons/Ionicons';
 import { clearErrors } from './redux/actions/erroraction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Setting from './screens/Setting';
+import SensorMgnt from './screens/SensorsMngt';
+import {getSensors} from './redux/actions/sensoraction';
+
 
 
 
 const ViewStack =createStackNavigator();
 const AboutStack= createStackNavigator();
 const SettingStack = createStackNavigator();
+const SensorMgntStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
 
 
 const ViewStackScreen=({navigation})=>(
@@ -45,6 +49,31 @@ const ViewStackScreen=({navigation})=>(
   
   
   </ViewStack.Navigator>
+  );
+
+  const SensorMgntStackScreen=({navigation})=>(
+
+    <SensorMgntStack.Navigator screenOptions={{
+      headerStyle:{
+       backgroundColor:'#009387'
+      },
+      headerTintColor:'#fff',
+      headerTitleStyle:{
+        fontWeight:'bold',
+      
+      }
+    }}>
+      <SensorMgntStack.Screen name='Sensors_Mgmt' component={SensorMgnt} options={{
+        title:'Sensors Management',
+        
+        headerLeft:()=>(
+          <Icon.Button name="menu" size ={25} backgroundColor='#009387'
+          onPress={()=>navigation.openDrawer()}> </Icon.Button>
+        )
+      }}/>
+    
+    
+    </SensorMgntStack.Navigator>
   
 
 );
@@ -109,9 +138,13 @@ const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
 
 
+
+
 useEffect(() => {
 
-  disptach(loadUser()); 
+  disptach(loadUser(),
+
+  ); 
 
   
 }, []);
@@ -137,7 +170,10 @@ useEffect(() => {
    name="Setting"
    component={SettingStackScreen}
    options={{}}/>
-
+   <Drawer.Screen
+   name="Sensors_Mgmt"
+   component={SensorMgntStackScreen}
+   options={{}}/>
   </Drawer.Navigator>)
 
       : <RootStackScreen/>}

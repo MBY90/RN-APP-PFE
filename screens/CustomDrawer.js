@@ -26,7 +26,7 @@ export default function CustomDrawer({...props }) {
 
 const logout=()=>{
   dispatch(SignOut());
-  AsyncStorage.clear();
+
 };
 
  
@@ -45,6 +45,17 @@ const logout=()=>{
     
     </View>
     <Drawer.Section styles={styles.drawerSection}>
+    <DrawerItem 
+    icon={(color,size)=>
+        <Icon name="antenna"
+        color='black'
+        size={20}
+        />
+    }
+    label="Sensors Managment"
+    onPress={()=>{props.navigation.navigate('Sensors_Mgmt')}}
+    />
+
     <DrawerItem 
     icon={(color,size)=>
         <Icon name="home-outline"
@@ -75,7 +86,7 @@ const logout=()=>{
     label="About"
     onPress={()=>{props.navigation.navigate('About')}}
     />
-
+  
   
     </Drawer.Section>
     </View>
