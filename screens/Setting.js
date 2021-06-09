@@ -1,26 +1,18 @@
 import React , { useState } from 'react';
-import{Alert,Text, View, Button,StyleSheet ,TouchableOpacity,Modal,Pressable} from 'react-native';
+import{Alert,Text, View,StyleSheet ,TouchableOpacity,Modal,TextInput} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {deleteAccount} from '../redux/actions/authaction';
-
-
-
-
-
+import {addSensor} from '../redux/actions/sensoraction';
 
 export default function Setting({navigation}) {
-
-
- 
-
-
-
 
 
   const [modalVisible, setModalVisible] = useState(false);
   const disptach= useDispatch();
   const email = useSelector(state => state.auth.user.email);
-  
+  const user = useSelector(state => state.auth.user.email);
+
+  const [sensor_name,setSensor]=useState('');
   const removeAccountAlert = () =>
      Alert.alert(
     "Delete Alert",
@@ -33,29 +25,58 @@ export default function Setting({navigation}) {
       { text: "OK", onPress: () => {disptach(deleteAccount({email}))} }
     ]
   );
+  const hundelSubmit=()=>{
+  if(!sensor_name)
+  {
+    Alert.alert("Sensor name is required");
+  }
+    setModalVisible(!modalVisible);
+
+    disptach(addSensor({user,sensor_name}));
+    setSensor('');
+
+  }
    
 
     return (
     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-    <View style={styles.centeredView}>
+    <View>
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
+     
             setModalVisible(!modalVisible);
           }}
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
+              <Text style={{fontSize:25}}>Add New Sensor </Text>
+             
+             <View style={{flexDirection:'row'}}>
+        
+             <TextInput 
+             placeholder="  Sensor Name:"
+             autoCapitalize='none'
+             value={sensor_name}
+             style={{borderWidth:1,borderColor:'#009387',width:200,height:50,alignItems:'center',borderRadius:10, margin:30,justifyContent:'center'}}
+             onChangeText={setSensor}
+             /> 
+             </View>
+              <TouchableOpacity onPress={hundelSubmit}
+      style={[styles.signIn,
+          { 
+          borderBottomColor:'#009387',
+           borderWidth:1,
+       
+      }]}
+      >
+
+      <Text style={[styles.textSign,{
+          color:'#009387'
+      }]} > Add New sensor </Text>
+      </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -105,13 +126,14 @@ export default function Setting({navigation}) {
       fontWeight: 'bold'
   },
   centeredView: {
-    flex: 1,
+ 
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+ 
+ 
   },
   modalView: {
-    margin: 20,
+    marginTop: 100,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -121,29 +143,12 @@ export default function Setting({navigation}) {
       width: 0,
       height: 2
     },
+    width:320,
+    height:320,
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
+    
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
 
-    })
+})

@@ -56,16 +56,7 @@ const logout=()=>{
     onPress={()=>{props.navigation.navigate('Sensors_Mgmt')}}
     />
 
-    <DrawerItem 
-    icon={(color,size)=>
-        <Icon name="home-outline"
-        color='black'
-        size={20}
-        />
-    }
-    label="View"
-    onPress={()=>{props.navigation.navigate('View')}}
-    />
+    
     <DrawerItem 
     icon={(color,size)=>
         <Icon name="account-cog-outline"

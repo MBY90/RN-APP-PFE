@@ -16,14 +16,8 @@ Notifications.setNotificationHandler({
        
 export default function ViewScreen({navigation}) {
 
-  useEffect(() => {
 
-  schedulePushNotification({email});
-  
- 
-  
-    
-  }, [])
+
 
   const email =useSelector(state=>state.auth.user.email);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -68,11 +62,11 @@ export default function ViewScreen({navigation}) {
   );
 }
 
-async function schedulePushNotification({email}) {
+export async function schedulePushNotification({sensor_name}) {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: `Welcome back👋${email}`,
-      body:"check what's new by clicking down here" ,
+      title: `Please Check Your Sensor ${sensor_name} ❗ `,
+      body:"We detected a failure in your device check it right here" ,
       data: { data: 'goes here' },
     },
     trigger: { seconds: 2 },
